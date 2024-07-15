@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+  back-shop-product:
+    image: 'shop_product:latest'
+    container_name: back-shop-product-container
+    ports:
+      - "8081:8081"
+    depends_on:
+      - shop-product-database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shop-product-database:5432/shop_product
+      - SPRING_DATASOURCE_USERNAME=bko
+      - SPRING_DATASOURCE_PASSWORD=bko
+      - JAVA_OPTS=-Xmx8g
+
+  shop-product-database:
+    image: 'postgres:13.1-alpine'
+    container_name: shop-product-database
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/data/postgres:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=bko
+      - POSTGRES_PASSWORD=bko
+      - POSTGRES_DB=shop_product
